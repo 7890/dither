@@ -20,7 +20,8 @@ StandardPaletteBW(int size)
     palette->colors = malloc(sizeof(DTPixel) * size);
 
     float step = 255.0f / (size - 1);
-    for (int i = 0; i < size; i++)
+    int i;
+    for (i = 0; i < size; i++)
 	palette->colors[i] = PixelFromRGB(
 	    roundf(i*step),
 	    roundf(i*step),
@@ -34,8 +35,8 @@ DTPalette *
 StandardPaletteRGB()
 {
     DTPalette *palette = malloc(sizeof(DTPalette));
-    palette->size = 8;
-    palette->colors = malloc(sizeof(DTPixel) * 3);
+    palette->size = 16;
+    palette->colors = malloc(sizeof(DTPixel) * palette->size);
     palette->colors[0] = PixelFromRGB(0xFF, 0x00, 0x00);
     palette->colors[1] = PixelFromRGB(0x00, 0xFF, 0x00);
     palette->colors[2] = PixelFromRGB(0x00, 0x00, 0xFF);
@@ -45,6 +46,15 @@ StandardPaletteRGB()
     palette->colors[6] = PixelFromRGB(0x00, 0x00, 0x00);
     palette->colors[7] = PixelFromRGB(0xFF, 0xFF, 0xFF);
 
+    palette->colors[8]  = PixelFromRGB(0x88, 0x00, 0x00);
+    palette->colors[9]  = PixelFromRGB(0x00, 0x88, 0x00);
+    palette->colors[10] = PixelFromRGB(0x00, 0x00, 0x88);
+    palette->colors[11] = PixelFromRGB(0x00, 0x88, 0x88);
+    palette->colors[12] = PixelFromRGB(0x88, 0x00, 0x88);
+    palette->colors[13] = PixelFromRGB(0x88, 0x88, 0x00);
+    palette->colors[14] = PixelFromRGB(0x00, 0x00, 0x00);
+    palette->colors[15] = PixelFromRGB(0x88, 0x88, 0x88);
+
     return palette;
 }
 
@@ -52,12 +62,13 @@ DTPixel
 FindClosestColorFromPalette(DTPixel needle, DTPalette *palette)
 {
     // search for smallest Euclidean distance
-    int index;
+    int index=0;
     int d, minimal = 255 * 255 * 3 + 1;
     int dR, dG, dB;
     DTPixel current;
 
-    for (int i = 0; i < palette->size; i++) {
+    int i;
+    for (i = 0; i < palette->size; i++) {
 	current = palette->colors[i];
 	dR = needle.r - current.r;
 	dG = needle.g - current.g;
