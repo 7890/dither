@@ -67,20 +67,23 @@ main(int argc, char ** argv)
 
     /* dump palette if verbose option was set */
     if (verbose)
-	for (int i = 0; i < palette->size; i++)
+    {
+        int i;
+	for (i = 0; i < palette->size; i++)
 	    printf("%d %d %d\n",
 		palette->colors[i].r,
 		palette->colors[i].g,
 		palette->colors[i].b
 	    );
-
+    }
     if (dither) {
 	ApplyFloydSteinbergDither(input, palette);
     } else {
 	/* closest color only */
 	DTPixel *pixel;
-	for (int i = 0; i < input->height; i++) {
-	    for (int j = 0; j < input->width; j++) {
+	int i, j;
+	for (i = 0; i < input->height; i++) {
+	    for (j = 0; j < input->width; j++) {
 		pixel = &input->pixels[i*input->width + j];
 		*pixel = FindClosestColorFromPalette(*pixel, palette);
 	    }
@@ -88,6 +91,11 @@ main(int argc, char ** argv)
     }
 
     WriteImageToFile(input, outputFile);
+
+    free(input->pixels);
+    free(input);
+    free(palette->colors);
+    free(palette);
 
     return 0;
 }
@@ -161,12 +169,13 @@ ReadPaletteFromStdin(int size)
     palette->size = size;
     palette->colors = malloc(sizeof(DTPixel) * size);
 
-    int r, g, b;
-    for (int i = 0; i < size; i++) {
-	scanf(" %d %d %d", &r, &g, &b);
+    int r, g, b, i, ret;
+    for (i = 0; i < size; i++) {
+	ret=scanf(" %d %d %d", &r, &g, &b);
 	palette->colors[i].r = r;
 	palette->colors[i].g = g;
 	palette->colors[i].b = b;
+	(void) ret;
     }
 
     return palette;
@@ -179,7 +188,8 @@ QuantizedPaletteForImage(DTImage *image, int size)
     MCTriplet *colors;
     DTPalette *palette;
 
-    for (int i = 0; i < image->resolution; i++)
+    int i;
+    for (i = 0; i < image->resolution; i++)
 	data[i] = MCTripletMake(
 	    image->pixels[i].r,
 	    image->pixels[i].g,
@@ -192,7 +202,7 @@ QuantizedPaletteForImage(DTImage *image, int size)
     palette->size = size;
     palette->colors = malloc(sizeof(DTPixel) * size);
 
-    for (int i = 0; i < size; i++) {
+    for (i = 0; i < size; i++) {
 	palette->colors[i].r = colors[i].value[0];
 	palette->colors[i].g = colors[i].value[1];
 	palette->colors[i].b = colors[i].value[2];
