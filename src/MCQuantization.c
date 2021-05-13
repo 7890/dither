@@ -73,7 +73,7 @@ MCQuantizeData(MCTriplet *data, mc_uint_t size, mc_byte_t level)
 
 		/* split cubes */
 		cubes[parentIndex+offset] = *parentCube;
-		cubes[parentIndex		].max.value[dim] = median;
+		cubes[parentIndex       ].max.value[dim] = median;
 		cubes[parentIndex+offset].min.value[dim] = median+1;
 
 		/* find new cube data sizes */
@@ -82,7 +82,7 @@ MCQuantizeData(MCTriplet *data, mc_uint_t size, mc_byte_t level)
 			newSize++;
 		/* newSize is now the index of the first element above the
 		 * median, thus it is also the count of elements below the median */
-		cubes[parentIndex		].size = newSize;
+		cubes[parentIndex       ].size = newSize;
 		cubes[parentIndex+offset].data += newSize;
 		cubes[parentIndex+offset].size -= newSize;
 
