@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Isrc/include
+CFLAGS = -O3 -g -Wall -Isrc/include
 LDLIBS = -lpng -lm
 
 SRCDIR = src
