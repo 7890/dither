@@ -102,7 +102,8 @@ MCQuantizeData(MCTriplet *data, mc_uint_t size, mc_byte_t level)
     }
 
     /* find final cube averages */
-    for (int i = 0; i < p_size; i++)
+    int i;
+    for (i = 0; i < p_size; i++)
 	palette[i] = MCCubeAverage(&cubes[i]);
 
     free(cubes);
@@ -121,7 +122,8 @@ MCShrinkCube(MCCube *cube)
     cube->min = MCTripletMake(0xFF, 0xFF, 0xFF);
     cube->max = MCTripletMake(0x00, 0x00, 0x00);
 
-    for (int i = 0; i < cube->size; i++) {
+    int i;
+    for (i = 0; i < cube->size; i++) {
 	r = data[i].value[0];
 	g = data[i].value[1];
 	b = data[i].value[2];
@@ -152,7 +154,8 @@ MCCalculateBiggestDimension(MCCube *cube)
     int diff = 0;
     int current;
 
-    for (int i = 0; i < NUM_DIM; i++) {
+    int i;
+    for (i = 0; i < NUM_DIM; i++) {
 	current = cube->max.value[i] - cube->min.value[i];
 	if (current > diff) {
 	    dim = i;
