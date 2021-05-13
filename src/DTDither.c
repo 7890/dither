@@ -19,8 +19,9 @@ byte ByteCap(int n);
 void
 ApplyFloydSteinbergDither(DTImage *image, DTPalette *palette)
 {
-    for (int i = 0; i < image->height; i++) {
-	for (int j = 0; j < image->width; j++) {
+    int i, j;
+    for (i = 0; i < image->height; i++) {
+	for (j = 0; j < image->width; j++) {
 	    DTPixel original = image->pixels[i*image->width + j];
 	    DTPixel new = FindClosestColorFromPalette(original, palette);
 
