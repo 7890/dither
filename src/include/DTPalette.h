@@ -6,14 +6,14 @@
  *
  */
 
-#ifndef DT_PALETTE
-#define DT_PALETTE
+#ifndef _DT_PALETTE_H_
+#define _DT_PALETTE_H_
 
-#include <DTImage.h>
+#include <DTPixel.h>
 
 typedef struct {
-    int size;
-    DTPixel *colors;
+	int size;
+	DTPixel *colors;
 } DTPalette;
 
 DTPalette *StandardPaletteBW(int size);

@@ -10,6 +10,17 @@
 #include <stdlib.h>
 #include <math.h>
 
+static DTPixel
+PixelFromRGB(byte r, byte g, byte b)
+{
+	DTPixel pixel;
+	pixel.r = r;
+	pixel.g = g;
+	pixel.b = b;
+
+	return pixel;
+}
+
 DTPalette *
 StandardPaletteBW(int size)
 {

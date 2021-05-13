@@ -118,17 +118,6 @@ WriteImageToFile(DTImage *img, char *filename)
 	fclose(file);
 }
 
-DTPixel
-PixelFromRGB(byte r, byte g, byte b)
-{
-	DTPixel pixel;
-	pixel.r = r;
-	pixel.g = g;
-	pixel.b = b;
-
-	return pixel;
-}
-
 /* returns non-zero if error occurred reading the files */
 int
 ReadDataFromFile(DTImage *img, FILE *file)

@@ -6,8 +6,8 @@
  *
  */
 
-#ifndef DT_DITHER
-#define DT_DITHER
+#ifndef _DT_DITHER_H_
+#define _DT_DITHER_H_
 
 #include <DTImage.h>
 #include <DTPalette.h>
