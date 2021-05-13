@@ -15,6 +15,8 @@
 #define HEADER_LEN 8
 #define PPM_HEADER 2
 
+typedef const png_bytep png_const_bytep;
+
 int ReadDataFromFile(DTImage *img, FILE *file);
 DTImageType IdentifyImageType(char *header);
 png_bytep *PNGRowPointersForImage(DTImage *);
@@ -107,7 +109,8 @@ WriteImageToFile(DTImage *img, char *filename)
     } else {
 	/* PPM */
 	fprintf(file, "P6\n%d %d\n255\n", img->width, img->height);
-	for (int i = 0; i < img->resolution; i++)
+	int i;
+	for (i = 0; i < img->resolution; i++)
 	    fwrite(&img->pixels[i], sizeof(DTPixel), 1, file);
     }
 
@@ -132,12 +135,16 @@ ReadDataFromFile(DTImage *img, FILE *file)
     if (img->type == t_PPM) {
 	/* simple format, done directly */
 	fseek(file, PPM_HEADER, SEEK_SET);
-	fscanf(file, " %d %d %*d ", &img->width, &img->height);
+	int ret=fscanf(file, " %d %d %*d ", &img->width, &img->height);
+        (void) ret;
 	img->pixels = malloc(sizeof(DTPixel) * img->width * img->height);
 	img->resolution = img->width * img->height;
 
-	for (int i = 0; i < img->resolution; i++)
-	    fread(&img->pixels[i], sizeof(DTPixel), 1, file);
+	int i;
+	for (i = 0; i < img->resolution; i++)
+	    ret=fread(&img->pixels[i], sizeof(DTPixel), 1, file);
+
+	(void) ret;
     }
     if (img->type == t_PNG) {
 	/* create data and info structs */
@@ -207,6 +214,7 @@ ReadDataFromFile(DTImage *img, FILE *file)
 DTImageType
 IdentifyImageType(char *header)
 {
+    //int png_sig_cmp(png_bytep sig, png_size_t start, png_size_t num_to_check);
     if (!png_sig_cmp((png_const_bytep)header, 0, HEADER_LEN))
 	return t_PNG;
 
@@ -224,7 +232,8 @@ PNGRowPointersForImage(DTImage *img)
     png_bytep *rowPointers = malloc(sizeof(png_bytep) * img->height);
     png_size_t rowSize = img->width * sizeof(DTPixel);
 
-    for (int i = 0; i < img->height; i++)
+    int i;
+    for (i = 0; i < img->height; i++)
 	rowPointers[i] = (png_bytep)img->pixels + rowSize * i;
 
     return rowPointers;
